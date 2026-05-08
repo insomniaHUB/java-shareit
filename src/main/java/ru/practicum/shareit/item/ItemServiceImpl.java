@@ -19,8 +19,8 @@ import java.util.Map;
 public class ItemServiceImpl implements ItemService {
     private final ItemMapper mapper;
     private final UserService userService;
-    private static final Map<Long, Item> itemStorage = new HashMap<>();
-    private static Long id = 0L;
+    private final Map<Long, Item> itemStorage = new HashMap<>();
+    private Long id = 0L;
 
     public ItemDto getItemById(Long id) {
         Item item = itemStorage.get(id);

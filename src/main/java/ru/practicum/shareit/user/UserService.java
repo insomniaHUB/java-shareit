@@ -14,9 +14,9 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private static final Map<Long, User> userStorage = new HashMap<>();
+    private final Map<Long, User> userStorage = new HashMap<>();
     private final UserMapper mapper;
-    private static Long id = 0L;
+    private Long id = 0L;
 
     public UserDto getUserById(Long id) {
         checkUserExisting(id);
