@@ -7,9 +7,6 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
@@ -27,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDto createUser(@Valid @RequestBody UserDto user) {
+    public UserDto createUser(@Valid @RequestBody User user) {
         return userService.createUser(user);
     }
 

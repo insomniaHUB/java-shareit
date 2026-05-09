@@ -4,49 +4,46 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.UsedEmailException;
-import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.user.dto.UserDto;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final Map<Long, User> userStorage = new HashMap<>();
     private final UserMapper mapper;
-    private Long id = 0L;
+    private final UserStorage userStorage;
+
 
     public UserDto getUserById(Long id) {
-        checkUserExisting(id);
-        User user = userStorage.get(id);
+        User user = userStorage.getUserById(id);
+        if (user == null) {
+            throw new NotFoundException("Пользователь не был найден");
+        }
+
         return mapper.toUserDto(user);
     }
 
     public List<UserDto> getUsers() {
-        return userStorage.values().stream()
+        return userStorage.getUsers().stream()
                 .map(mapper::toUserDto)
                 .toList();
     }
 
-    public UserDto createUser(UserDto userDto) {
-        validateUser(userDto);
-        isEmailUsed(userDto);
-        User user = mapper.toUser(userDto);
-        id += 1L;
-        user.setId(id);
-        userStorage.put(id, user);
+    public UserDto createUser(User user) {
+        isEmailUsed(user);
 
-        return mapper.toUserDto(user);
+        return mapper.toUserDto(userStorage.createUser(user));
     }
 
     public UserDto changeUser(UserDto newUser, Long id) {
-        checkUserExisting(id);
-        User user = userStorage.get(id);
+        User user = userStorage.getUserById(id);
+        if (user == null) {
+            throw new NotFoundException("Пользователь не был найден");
+        }
 
         if (newUser.getEmail() != null && !newUser.getEmail().isBlank()) {
-            isEmailUsed(newUser);
+            isEmailUsed(mapper.toUser(newUser));
             user.setEmail(newUser.getEmail());
         }
         if (newUser.getName() != null && !newUser.getName().isBlank()) {
@@ -57,30 +54,21 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-        userStorage.remove(id);
+        userStorage.deleteUser(id);
     }
 
     public void checkUserExisting(Long userId) {
-        User user = userStorage.get(userId);
+        User user = userStorage.getUserById(userId);
 
         if (user == null) {
             throw new NotFoundException("Пользователь не был найден");
         }
     }
 
-    private void validateUser(UserDto user) {
-        if (user == null || user.getEmail() == null || user.getEmail().isBlank()
-                || user.getName() == null || user.getName().isBlank()) {
-            throw new ValidationException("Ошибка валидации пользователя");
-        }
-    }
-
-    private void isEmailUsed(UserDto user) {
-        List<String> emails = userStorage.values().stream()
-                .map(User::getEmail)
-                .toList();
-        if (emails.contains(user.getEmail())) {
-            throw new UsedEmailException("Пользователь с такой почтой уже существует");
-        }
+    private void isEmailUsed(User user) {
+        userStorage.getUsers().stream()
+                .filter(u -> user.getEmail().equals(u.getEmail()))
+                .findAny()
+                .ifPresent(u -> { throw new UsedEmailException("Пользователь с такой почтой уже существует"); });
     }
 }
