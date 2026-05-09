@@ -68,8 +68,7 @@ public class UserService {
         userStorage.getUsers().stream()
                 .filter(u -> user.getEmail().equals(u.getEmail()))
                 .findAny()
-                .ifPresent(u ->
-                {
+                .ifPresent(u -> {
                     throw new UsedEmailException("Пользователь с такой почтой уже существует");
                 });
     }
