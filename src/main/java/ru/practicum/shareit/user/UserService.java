@@ -14,7 +14,6 @@ public class UserService {
     private final UserMapper mapper;
     private final UserStorage userStorage;
 
-
     public UserDto getUserById(Long id) {
         User user = userStorage.getUserById(id);
         if (user == null) {
@@ -69,6 +68,9 @@ public class UserService {
         userStorage.getUsers().stream()
                 .filter(u -> user.getEmail().equals(u.getEmail()))
                 .findAny()
-                .ifPresent(u -> { throw new UsedEmailException("Пользователь с такой почтой уже существует"); });
+                .ifPresent(u ->
+                {
+                    throw new UsedEmailException("Пользователь с такой почтой уже существует");
+                });
     }
 }
