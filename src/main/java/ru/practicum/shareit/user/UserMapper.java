@@ -1,19 +1,36 @@
 package ru.practicum.shareit.user;
 
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.dto.UserChangeDto;
+import ru.practicum.shareit.user.dto.UserCreateDto;
 
 @Component
 public class UserMapper {
-    public UserDto toUserDto(User user) {
-        return new UserDto(user.getId(),
+    public UserChangeDto toUserChangeDto(User user) {
+        return new UserChangeDto(user.getId(),
                 user.getName(),
                 user.getEmail());
     }
 
-    public User toUser(UserDto dto) {
-        return new User(dto.getId(),
-                dto.getName(),
-                dto.getEmail());
+    public UserCreateDto toUserCreateDto(User user) {
+        return new UserCreateDto(user.getId(),
+                user.getName(),
+                user.getEmail());
+    }
+
+    public User toUserFromCreate(UserCreateDto dto) {
+        User user = new User();
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+
+        return user;
+    }
+
+    public User toUserFromChange(UserChangeDto dto) {
+        User user = new User();
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+
+        return user;
     }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ItemDto {
+public class ItemChangeDto {
     private Long id;
     private String name;
     private String description;

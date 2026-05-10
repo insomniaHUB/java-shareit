@@ -3,8 +3,8 @@ package ru.practicum.shareit.item;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.dto.ItemChangeDto;
+import ru.practicum.shareit.item.dto.ItemCreateDto;
 
 import java.util.List;
 
@@ -15,30 +15,30 @@ public class ItemController {
     private final ItemServiceImpl itemService;
 
     @GetMapping("/{itemId}")
-    public ItemDto getItemById(@PathVariable Long itemId) {
+    public ItemChangeDto getItemById(@PathVariable Long itemId) {
         return itemService.getItemById(itemId);
     }
 
     @GetMapping
-    public List<ItemDto> getItems(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public List<ItemChangeDto> getItems(@RequestHeader("X-Sharer-User-Id") Long userId) {
         return itemService.getItems(userId);
     }
 
     @GetMapping("/search")
-    public List<ItemDto> getItemByText(@RequestParam String text) {
+    public List<ItemChangeDto> getItemByText(@RequestParam String text) {
         return itemService.getItemByText(text);
     }
 
     @PostMapping
-    public ItemDto createItem(@RequestBody @Valid Item item,
-                           @RequestHeader("X-Sharer-User-Id") Long userId) {
+    public ItemCreateDto createItem(@RequestBody @Valid ItemCreateDto item,
+                                    @RequestHeader("X-Sharer-User-Id") Long userId) {
         return itemService.createItem(item, userId);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto changeItem(@PathVariable Long itemId,
-                           @RequestBody @Valid ItemDto item,
-                           @RequestHeader("X-Sharer-User-Id") Long userId) {
+    public ItemChangeDto changeItem(@PathVariable Long itemId,
+                                    @RequestBody @Valid ItemChangeDto item,
+                                    @RequestHeader("X-Sharer-User-Id") Long userId) {
         return itemService.changeItem(itemId, item, userId);
     }
 }
