@@ -8,22 +8,21 @@ import lombok.NoArgsConstructor;
 import ru.practicum.shareit.user.User;
 
 @Entity
-@Table(name = "items")
+@Table(name = "comments")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Item {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String name;
-    @Column(nullable = false)
-    private String description;
-    @Column(nullable = false)
-    private Boolean isAvailable;
+    private String text;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", nullable = false)
-    private User owner;
+    @JoinColumn(name = "item_id")
+    private Item item;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private User author;
 }
