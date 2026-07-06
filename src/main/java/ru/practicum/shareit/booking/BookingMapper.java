@@ -2,7 +2,6 @@ package ru.practicum.shareit.booking;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.booking.dto.BookingChangeDto;
 import ru.practicum.shareit.booking.dto.BookingCreateDto;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.model.Booking;
@@ -36,16 +35,6 @@ public class BookingMapper {
                 .item(item)
                 .booker(user)
                 .status(BookingStatus.WAITING)
-                .build();
-    }
-
-    public Booking toBookingFromChangeDto(BookingChangeDto dto, User user, Item item, BookingStatus status) {
-        return Booking.builder()
-                .startDate(dto.getStartDate())
-                .endDate(dto.getEndDate())
-                .item(item)
-                .booker(user)
-                .status(status)
                 .build();
     }
 }

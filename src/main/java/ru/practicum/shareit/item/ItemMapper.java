@@ -42,24 +42,6 @@ public class ItemMapper {
                 .build();
     }
 
-    public Item toItemFromDto(ItemDto dto) {
-        return Item.builder()
-                .id(dto.getId())
-                .name(dto.getName())
-                .description(dto.getDescription())
-                .isAvailable(dto.getIsAvailable())
-                .build();
-    }
-
-    public Item toItemFromChangeDto(ItemChangeDto item, Long ownerId) {
-        Item newItem = new Item();
-        newItem.setName(item.getName());
-        newItem.setDescription(item.getDescription());
-        newItem.setIsAvailable(item.getIsAvailable());
-
-        return newItem;
-    }
-
     public Item toItemFromCreateDto(ItemCreateDto item, User owner) {
         Item newItem = new Item();
         newItem.setName(item.getName());
