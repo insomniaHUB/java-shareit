@@ -53,11 +53,10 @@ public class UserService {
     }
 
     private void isEmailUsed(String email) {
-        userRepository.findAll().stream()
-                .filter(u -> u.getEmail().equals(email))
-                .findAny()
-                .ifPresent(u -> {
-                    throw new UsedEmailException("Пользователь с такой почтой уже существует");
-                });
+        User user = userRepository.findByEmail(email);
+
+        if (user != null) {
+            throw new UsedEmailException("Пользователь с такой почтой уже существует");
+        }
     }
 }

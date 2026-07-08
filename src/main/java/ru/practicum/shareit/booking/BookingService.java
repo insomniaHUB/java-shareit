@@ -82,6 +82,10 @@ public class BookingService {
         User user = getUserById(userId);
         Item item = getItemById(newBooking.getItemId());
 
+        if (newBooking.getStart().isAfter(newBooking.getEnd()) || newBooking.getStart().equals(newBooking.getEnd())) {
+            throw new ValidationException("Время начала бронирования должно быть раньше окончания");
+        }
+
         if (item.getOwner().getId().equals(userId)) {
             throw new BadRequestException("Владелец вещи не может забронировать свою же вещь");
         }

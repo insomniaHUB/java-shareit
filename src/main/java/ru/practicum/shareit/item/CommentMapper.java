@@ -14,11 +14,12 @@ import java.time.LocalDateTime;
 public class CommentMapper {
     private final ItemMapper itemMapper;
 
-    public Comment toComment(CommentDto dto, User author, Item item) {
+    public Comment toComment(CommentDto dto, User author, Item item, LocalDateTime created) {
         return Comment.builder()
                 .text(dto.getText())
                 .item(item)
                 .author(author)
+                .created(created)
                 .build();
     }
 
@@ -28,7 +29,7 @@ public class CommentMapper {
                 .text(comment.getText())
                 .authorName(comment.getAuthor().getName())
                 .item(itemMapper.toItemDto(comment.getItem()))
-                .created(LocalDateTime.now())
+                .created(comment.getCreated())
                 .build();
     }
 }
