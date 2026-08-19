@@ -11,8 +11,6 @@ import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingState;
 import ru.practicum.shareit.exception.ValidationException;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/bookings")
 @RequiredArgsConstructor

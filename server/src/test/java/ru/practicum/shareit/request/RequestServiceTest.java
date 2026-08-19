@@ -40,7 +40,7 @@ class RequestServiceTest {
     @Test
     void createItemRequest_success() {
         User user = User.builder().id(1L).name("Kirill").email("kirill@gmail.com").build();
-        ItemRequest request = ItemRequest.builder().id(1L).user(user).description("I wanna that chainsaw").build();
+        ItemRequest request = ItemRequest.builder().id(1L).requestor(user).description("I wanna that chainsaw").build();
         ItemRequestDto requestDto = ItemRequestDto.builder().id(1L).userId(1L).description("I wanna that chainsaw").build();
         Item item = Item.builder().id(1L).name("Chainsaw").description("Very cool chainsaw").isAvailable(true).build();
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
@@ -59,7 +59,7 @@ class RequestServiceTest {
     @Test
     void getUsersItemRequests_success() {
         User user = User.builder().id(1L).name("Kirill").email("kirill@gmail.com").build();
-        ItemRequest request = ItemRequest.builder().id(1L).user(user).description("I wanna that chainsaw").build();
+        ItemRequest request = ItemRequest.builder().id(1L).requestor(user).description("I wanna that chainsaw").build();
         Item item = Item.builder().id(1L).name("Chainsaw").description("Very cool chainsaw").isAvailable(true).build();
         ItemRequestDto requestDto = ItemRequestDto.builder().id(1L).userId(1L).description("I wanna that chainsaw").build();
 
@@ -109,7 +109,7 @@ class RequestServiceTest {
     @Test
     void getRequest_success() {
         User user = User.builder().id(1L).name("Kirill").email("kirill@gmail.com").build();
-        ItemRequest request = ItemRequest.builder().id(1L).user(user).description("I wanna that chainsaw").build();
+        ItemRequest request = ItemRequest.builder().id(1L).requestor(user).description("I wanna that chainsaw").build();
         Item item = Item.builder().id(1L).name("Chainsaw").description("Very cool chainsaw").isAvailable(true).build();
         ItemRequestDto requestDto = ItemRequestDto.builder().id(1L).userId(1L).description("I wanna that chainsaw").build();
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
