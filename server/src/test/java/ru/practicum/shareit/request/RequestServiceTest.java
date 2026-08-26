@@ -42,7 +42,7 @@ class RequestServiceTest {
         User user = User.builder().id(1L).name("Kirill").email("kirill@gmail.com").build();
         ItemRequest request = ItemRequest.builder().id(1L).requestor(user).description("I wanna that chainsaw").build();
         ItemRequestDto requestDto = ItemRequestDto.builder().id(1L).userId(1L).description("I wanna that chainsaw").build();
-        Item item = Item.builder().id(1L).name("Chainsaw").description("Very cool chainsaw").isAvailable(true).build();
+        Item item = Item.builder().id(1L).owner(user).name("Chainsaw").description("Very cool chainsaw").isAvailable(true).build();
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(requestMapper.toItemRequest(requestDto, user)).thenReturn(request);
         when(itemRequestRepository.save(any(ItemRequest.class))).thenReturn(request);
@@ -60,13 +60,13 @@ class RequestServiceTest {
     void getUsersItemRequests_success() {
         User user = User.builder().id(1L).name("Kirill").email("kirill@gmail.com").build();
         ItemRequest request = ItemRequest.builder().id(1L).requestor(user).description("I wanna that chainsaw").build();
-        Item item = Item.builder().id(1L).name("Chainsaw").description("Very cool chainsaw").isAvailable(true).build();
+        Item item = Item.builder().id(1L).owner(user).name("Chainsaw").description("Very cool chainsaw").request(request).isAvailable(true).build();
         ItemRequestDto requestDto = ItemRequestDto.builder().id(1L).userId(1L).description("I wanna that chainsaw").build();
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(itemRequestRepository.findByRequestorIdOrderByCreatedDesc(1L)).thenReturn(List.of(request));
-        when(itemRepository.findByRequestId(1L)).thenReturn(List.of(item));
-        when(requestMapper.toRequestDto(any(ItemRequest.class), any(List.class))).thenReturn(requestDto);
+        when(itemRepository.findByRequestIdIn(List.of(1L))).thenReturn(List.of(item));
+        when(requestMapper.toRequestDto(any(ItemRequest.class), anyList())).thenReturn(requestDto);
 
         List<ItemRequestDto> result = requestService.getUsersItemRequests(1L);
 
@@ -90,8 +90,7 @@ class RequestServiceTest {
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(itemRequestRepository.findByRequestorIdNot(1L)).thenReturn(List.of(earlyRequest, lateRequest));
-        when(itemRepository.findByRequestId(10L)).thenReturn(Collections.emptyList());
-        when(itemRepository.findByRequestId(20L)).thenReturn(Collections.emptyList());
+        when(itemRepository.findByRequestIdIn(anyList())).thenReturn(Collections.emptyList());
         when(requestMapper.toRequestDto(eq(earlyRequest), any(List.class))).thenReturn(earlyRequestDto);
         when(requestMapper.toRequestDto(eq(lateRequest), any(List.class))).thenReturn(lateRequestDto);
 
@@ -110,7 +109,7 @@ class RequestServiceTest {
     void getRequest_success() {
         User user = User.builder().id(1L).name("Kirill").email("kirill@gmail.com").build();
         ItemRequest request = ItemRequest.builder().id(1L).requestor(user).description("I wanna that chainsaw").build();
-        Item item = Item.builder().id(1L).name("Chainsaw").description("Very cool chainsaw").isAvailable(true).build();
+        Item item = Item.builder().id(1L).name("Chainsaw").description("Very cool chainsaw").owner(user).request(request).isAvailable(true).build();
         ItemRequestDto requestDto = ItemRequestDto.builder().id(1L).userId(1L).description("I wanna that chainsaw").build();
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(itemRepository.findByRequestId(1L)).thenReturn(List.of(item));
