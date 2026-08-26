@@ -21,6 +21,15 @@ public class ItemMapper {
                 .build();
     }
 
+    public static ItemInRequestDto toItemInRequestDto(Item item) {
+        return ItemInRequestDto.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .ownerId(item.getOwner().getId())
+                .build();
+    }
+
     public static ItemGetDto toItemGetDto(Item item, List<CommentDto> comments) {
         return ItemGetDto.builder()
                 .id(item.getId())

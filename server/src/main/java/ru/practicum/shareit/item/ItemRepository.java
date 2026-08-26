@@ -11,6 +11,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByRequestId(Long requestId);
 
+    List<Item> findByRequestIdIn(List<Long> requestIds);
+
     @Query("select it " +
             "from Item as it " +
             "where (lower(it.name) like lower(concat('%', ?1, '%')) " +
