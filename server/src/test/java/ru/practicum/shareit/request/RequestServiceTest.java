@@ -42,7 +42,7 @@ class RequestServiceTest {
         User user = User.builder().id(1L).name("Kirill").email("kirill@gmail.com").build();
         ItemRequest request = ItemRequest.builder().id(1L).requestor(user).description("I wanna that chainsaw").build();
         ItemRequestDto requestDto = ItemRequestDto.builder().id(1L).userId(1L).description("I wanna that chainsaw").build();
-        Item item = Item.builder().id(1L).owner(user).name("Chainsaw").description("Very cool chainsaw").isAvailable(true).build();
+        Item item = Item.builder().id(1L).owner(user).name("Chainsaw").request(request).description("Very cool chainsaw").isAvailable(true).build();
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(requestMapper.toItemRequest(requestDto, user)).thenReturn(request);
         when(itemRequestRepository.save(any(ItemRequest.class))).thenReturn(request);
